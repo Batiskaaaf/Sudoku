@@ -1,54 +1,57 @@
-.gameboard{
+
+:root {
+    --darkest-color: #011502;
+    --background-color: #3E3E3B;
+    --cell-color: #EDFAFD;
+    --semiselected-color: #A2AAB0;
+    --selected-color: #4C586F;
+    --onhover-color: #CBC5C1;
+    --text-color: #A0C1B8;
+    --timer-color: #FF7E5F;
+}
+
+html{
     user-select:none;
   }
 
 body {
+    text-align: center;
     margin: 0;
-    background-color: gray;
+    background-color: var(--background-color);
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 h1 {
     margin: 0;
-    text-align: center;
+    margin-top: 30px;
+    color: var(--text-color);
+
 }
+
+h2 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: var(--timer-color);
+}
+
 hr {
     width: 500px;
 }
-
 .game-container {
-    padding-top: 10px;
-    margin: 0;
-    height: 95vh;
-}
-
-.row {
-    margin-left: 50px;
-    margin-right: 50px;
-    padding: 5px;
-    height: 85vh;
-    text-align: left;
-    background-color:gray;
-    display: flex;
-}
-
-.settings {
-    flex: 0 0 20vw;
-    background-color: #ece89d;
+    min-width: 550px;
 }
 
 .game {
     padding: 5px;
-    text-align: center;
-    background-color: cornsilk;
     flex: 1 1 auto;
-    display: flex;
-    justify-content:center;
-    align-items:center;
+    min-height: 540px;
+    min-height: 540px;
 }
 
-.gameobard-container {
-    min-height: 540px;
-    min-height: 540px;
+.gameboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gameboard 
@@ -61,13 +64,187 @@ hr {
 
 }
 
+.buttons-container {
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 570px;
+    margin-top: 60px;
+    display: flex;
+    height: 40px;
+}
+
+.box-1 { background-color: #FF6766; }
+.box-2 { background-color: #3C3C3C; }
+.box-3 { background-color: #66A182; }
+
+.btn {
+    margin: 0px;
+    line-height: 50px;
+    height: 38px;
+    text-align: center;
+    width: 150px;
+    cursor: pointer;
+    vertical-align: middle;
+    line-height: 44px;
+}
+
+/* 
+========================
+      BUTTON ONE
+========================
+*/
+
+
+.btn-one {
+    color: #FFF;
+    transition: all 0.3s;
+    position: relative;
+}
+.btn-one span {
+    transition: all 0.3s;
+}
+.btn-one::before {
+    content: '';
+    position: absolute;
+    bottom: 5;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: rgba(255,255,255,0.5);
+    border-bottom-color: rgba(255,255,255,0.5);
+    transform: scale(0.1, 1);
+}
+.btn-one:hover span {
+    letter-spacing: 2px;
+}
+.btn-one:hover::before {
+    opacity: 1; 
+    transform: scale(1, 1); 
+}
+.btn-one::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.3s;
+    background-color: rgba(255,255,255,0.1);
+}
+.btn-one:hover::after {
+    opacity: 0; 
+    transform: scale(0.1, 1);
+}
+
+
+/* 
+========================
+      BUTTON TWO
+========================
+*/
+.btn-two {
+  color: #FFF;
+  transition: all 0.5s;
+  position: relative; 
+}
+.btn-two span {
+  z-index: 2; 
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%; 
+}
+.btn-two::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all 0.5s;
+  border: 1px solid rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.1);
+}
+.btn-two::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all 0.5s;
+  border: 1px solid rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.1);
+}
+.btn-two:hover::before {
+  transform: rotate(-45deg);
+  background-color: rgba(255,255,255,0);
+}
+.btn-two:hover::after {
+  transform: rotate(45deg);
+  background-color: rgba(255,255,255,0);
+}
+
+
+/* 
+========================
+      BUTTON THREE
+========================
+*/
+.btn-three {
+  color: #FFF;
+  transition: all 0.5s;
+  position: relative;
+}
+.btn-three::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(255,255,255,0.1);
+  transition: all 0.3s;
+}
+.btn-three:hover::before {
+  opacity: 0 ;
+  transform: scale(0.5,0.5);
+}
+.btn-three::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 99%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border: 1px solid rgba(255,255,255,0.5);
+  transform: scale(1.2,1.2);
+}
+.btn-three:hover::after {
+  opacity: 1;
+  transform: scale(1,1);
+}
 .cell
 {
     font-size: 25px;
     font-family:Arial, Helvetica, sans-serif;
     height: 58px;
     width: 58px;
-    background-color: rgb(155, 176, 163);
+    background-color: var(--cell-color);
     margin: 1px;
     display: flex;
     align-items: center;
@@ -77,27 +254,27 @@ hr {
 
 
 .border-right {
-    border-right: 2px solid #5f7563;
+    border-right: 2px solid var(--darkest-color);
     width: 56px;
 }
 
 .border-left {
-    border-left: 2px solid #5f7563;
+    border-left: 2px solid var(--darkest-color);
     width: 56px;
 }
 
 .border-top {
-    border-top: 2px solid #5f7563;
+    border-top: 2px solid var(--darkest-color);
     height: 56px;
 }
 
 .border-bottom {
-    border-bottom: 2px solid #5f7563;
+    border-bottom: 2px solid var(--darkest-color);
     height: 56px;
 }
 
 .cell:hover {
-    background-color: #5a7566;
+    background-color: var(--onhover-color);
 }
 
 .hoverable {
@@ -105,9 +282,9 @@ hr {
 }
 
 .semiselected {
-    background-color: #749181;
+    background-color: var(--semiselected-color);
 }
 
 .selected {
-    background-color: #5a7566;
+    background-color: var(--selected-color);
 }

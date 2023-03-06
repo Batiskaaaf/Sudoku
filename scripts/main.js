@@ -12,12 +12,16 @@ function initialize()
 
 function onClickCell(args)
 {
-    if(selectedCell)
-    {       
+    if(selectedCell)   
+    {
         changeLine(selectedCell, 'row', true);
         changeLine(selectedCell, 'col', true);
         deselectCell(selectedCell);
     }
+
+    if(args.target == selectedCell)
+        return;
+
     changeLine(args.target, 'row');
     changeLine(args.target, 'col');
     SelectCell(args.target);
@@ -47,6 +51,7 @@ function deselectCell(target)
 {
     target.classList.remove('selected');
     target.classList.remove('semiselected');
+    selectedCell == null;
 }
 
 function semiSelectCell(target)
