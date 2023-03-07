@@ -114,31 +114,6 @@ const sudokuCreate = (grid) => {
     return isFullGrid(grid);
 }
 
-const sudokuCheck = (grid) => {
-    let unassigned_pos = {
-        row: -1,
-        col: -1
-    }
-
-    if (!findUnassignedPos(grid, unassigned_pos)) return true;
-
-    grid.forEach((row, i) => {
-        row.forEach((num, j) => {
-            if (isSafe(grid, i, j, num)) {
-                if (isFullGrid(grid)) {
-                    return true;
-                } else {
-                    if (sudokuCreate(grid)) {
-                        return true;
-                    }
-                }
-            }
-        })
-    })
-
-    return isFullGrid(grid);
-}
-
 const rand = () => Math.floor(Math.random() * CONSTANT.GRID_SIZE);
 
 const removeCells = (grid, level) => {
