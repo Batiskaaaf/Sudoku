@@ -1,12 +1,15 @@
+
+
 window.addEventListener('load', initialize)
 
 let gameDiv;
 let selectedCell = null;
+let grid;
 
 function initialize()
 {
     gameDiv = document.querySelector('.gameboard');
-
+    console.log(sudokuGen(74));
     createGameField();
 }
 
