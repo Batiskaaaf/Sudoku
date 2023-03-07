@@ -1,47 +1,108 @@
-
-
-window.addEventListener('load', initialize)
-
-let gameDiv;
+let gameboard;
 let selectedCell = null;
-let grid;
+let startGrid;
+let currentGrid = [[]];
+const cells = [];
+let prefiledCells =[];
+const notFilledCells = [];
+const selectedCells = [];
 
-function initialize()
-{
-    gameDiv = document.querySelector('.gameboard');
-    console.log(sudokuGen(74));
-    createGameField();
-}
+gameboard = document.querySelector('.gameboard');
+createGameField();
+fillNumberContainer();
 
-function onClickCell(args)
-{
-    if(selectedCell)   
+document.querySelector('.btn-one').addEventListener('click', () =>{
+    startGrid = sudokuGen(29).original;
+    prefiledCells = [];
+    currentGrid = startGrid.map((arr) => {
+        return arr.slice();
+    });
+    for (let i = 0; i < 9; i++)
     {
-        changeLine(selectedCell, 'row', true);
-        changeLine(selectedCell, 'col', true);
+        for (let j = 0; j < 9; j++)
+        {
+            let el = cells.find(x => x.className.includes(`row-${i} col-${j}`));
+            if(startGrid[i][j] != 0 ){
+                prefiledCells.push(el);
+            }
+            setTimeout(() => el.innerText = startGrid[i][j] == 0 ? '' : startGrid[i][j], Math.random() * 500);
+        }
+    }
+
+    if(selectedCell)
+    {
+        deselectAll();
         deselectCell(selectedCell);
     }
+});
 
-    if(args.target == selectedCell)
-        return;
-
-    changeLine(args.target, 'row');
-    changeLine(args.target, 'col');
-    SelectCell(args.target);
-}
-
-function changeLine(target, className, deselect)
-{
-    let lineClassName = Array.from(target.classList).find(x => x.includes(className));
-    let line = document.querySelectorAll('.' + lineClassName);
-    for(const el of line)
+document.querySelector('.btn-three').addEventListener('click', (e) => {
+    if(e.target.innerText == 'Validate')
     {
-        if(!deselect)
-            semiSelectCell(el);
-        else
-            deselectCell(el);
+        let isGood = isValidSudoku(currentGrid);
+
+        //TODO animate valid/invalid grid
+        console.log(isGood);
+        e.target.innerText = 'Solve it!'
+    }
+    else if (e.target.innerText = 'Solve it!')
+    {
+        //TODO animate solution
+        solveSudoku(currentGrid);
+        console.log(currentGrid);
+    }
+    if(selectedCell)
+    {
+        deselectAll();
+        deselectCell(selectedCell);
+    }
+});
+
+document.querySelector('.btn-two').addEventListener('click', () => {
+
+    for (const el of cells) {
+        if(!prefiledCells.find(x => x == el))
+        {
+            setTimeout(() => el.innerText = '', Math.random() * 500);
+        }
+    }
+    if(selectedCell)
+    {
+        deselectAll();
+        deselectCell(selectedCell);
+    }
+});
+
+document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e) => {
+    if(selectedCell && !prefiledCells.find(x => x == selectedCell)){
+        selectedCell.innerText = e.target.innerText;
+        let row = Array.from(selectedCell.classList).find(x => x.includes('row')).charAt(4);
+        let col = Array.from(selectedCell.classList).find(x => x.includes('col')).charAt(4);
+        currentGrid[row][col] = Number(e.target.innerText);
     }
 
+    
+})) 
+
+function onClickCell(e)
+{      
+    if(selectedCell == e.target){
+        deselectCell(selectedCell)
+        deselectAll();
+        return;
+    }
+    if(selectedCell)
+    {
+        deselectCell(selectedCell);
+        deselectAll();
+    }
+    
+    SelectCell(e.target);
+
+    if(e.target.innerText != '' && cells.find(x => x == e.target))
+    {
+        selectSameValue(e.target);
+    }
 }
 
 function SelectCell(target)
@@ -50,25 +111,34 @@ function SelectCell(target)
     selectedCell = target;
 }
 
+function deselectAll()
+{
+    for(let el of selectedCells)
+    {
+        el.classList.remove('selected');
+    }
+}
+
 function deselectCell(target)
 {
     target.classList.remove('selected');
-    target.classList.remove('semiselected');
-    selectedCell == null;
+    selectedCell = null;
 }
 
-function semiSelectCell(target)
+function selectSameValue(target)
 {
-    target.classList.add('semiselected');
+    for(let el of cells.filter(x => x.innerText == target.innerText))
+    {
+        el.classList.add('selected');
+        selectedCells.push(el);
+    }
 }
-
 
 function createCell(y, x)
 {
     let cell = document.createElement('div');
-    cell.className = `cell row-${y} col-${x} hoverable`;
-    cell.innerText = y;
-    cell.style.backgroundColor
+    cell.className = `cell row-${y} col-${x}`;
+    cell.style.backgroundColor;
     if(x == 2 || x == 5){;
         cell.className += ' border-right';
     }
@@ -82,7 +152,8 @@ function createCell(y, x)
         cell.className += ' border-top';
     }
     cell.addEventListener('click', onClickCell);
-    gameDiv.append(cell);
+    cells.push(cell);
+    gameboard.append(cell);
 }
 
 function createGameField()
@@ -94,5 +165,20 @@ function createGameField()
             createCell(i,j);
         }
     }
+}
 
+function fillNumberContainer()
+{
+    let container = document.querySelector('.number-container');
+    for (let i = 1; i < 10; i++) {
+        let el = document.createElement('div');
+        el.classList.add('number');
+        el.innerText = i;
+        container.append(el);
+    }
+    let el = document.createElement('div');
+        el.classList.add('number');
+        el.innerText = 'X';
+    container.append(el);
+    
 }

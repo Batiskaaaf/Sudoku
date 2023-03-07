@@ -170,3 +170,103 @@ const sudokuGen = (level) => {
     }
     return undefined;
 }
+
+function isValidSudoku(grid) {
+    // Check rows
+    for (let row = 0; row < 9; row++) {
+      const rowSet = new Set();
+      for (let col = 0; col < 9; col++) {
+        const val = grid[row][col];
+        if (val === 0) {
+          continue;
+        }
+        if (rowSet.has(val)) {
+          return false;
+        }
+        rowSet.add(val);
+      }
+    }
+  
+    // Check columns
+    for (let col = 0; col < 9; col++) {
+      const colSet = new Set();
+      for (let row = 0; row < 9; row++) {
+        const val = grid[row][col];
+        if (val === 0) {
+          continue;
+        }
+        if (colSet.has(val)) {
+          return false;
+        }
+        colSet.add(val);
+      }
+    }
+  
+    // Check sub-grids
+    for (let i = 0; i < 9; i += 3) {
+      for (let j = 0; j < 9; j += 3) {
+        const subgridSet = new Set();
+        for (let row = i; row < i + 3; row++) {
+          for (let col = j; col < j + 3; col++) {
+            const val = grid[row][col];
+            if (val === 0) {
+              continue;
+            }
+            if (subgridSet.has(val)) {
+              return false;
+            }
+            subgridSet.add(val);
+          }
+        }
+      }
+    }
+  
+    return true;
+}
+
+function solveSudoku(grid) {
+    function getPossibleValues(row, col) {
+      const usedValues = new Set();
+      for (let i = 0; i < 9; i++) {
+        usedValues.add(grid[row][i]);
+        usedValues.add(grid[i][col]);
+      }
+      const subgridRow = Math.floor(row / 3) * 3;
+      const subgridCol = Math.floor(col / 3) * 3;
+      for (let i = subgridRow; i < subgridRow + 3; i++) {
+        for (let j = subgridCol; j < subgridCol + 3; j++) {
+          usedValues.add(grid[i][j]);
+        }
+      }
+      const possibleValues = [];
+      for (let val = 1; val <= 9; val++) {
+        if (!usedValues.has(val)) {
+          possibleValues.push(val);
+        }
+      }
+      return possibleValues;
+    }
+  
+    function solveHelper(row, col) {
+      if (row === 9) {
+        return true;
+      }
+      const nextRow = col === 8 ? row + 1 : row;
+      const nextCol = col === 8 ? 0 : col + 1;
+      if (grid[row][col] !== 0) {
+        return solveHelper(nextRow, nextCol);
+      }
+      const possibleValues = getPossibleValues(row, col);
+      for (const val of possibleValues) {
+        grid[row][col] = val;
+        if (solveHelper(nextRow, nextCol)) {
+          return true;
+        }
+      }
+      grid[row][col] = 0;
+      return false;
+    }
+  
+    solveHelper(0, 0);
+    return grid;
+  }

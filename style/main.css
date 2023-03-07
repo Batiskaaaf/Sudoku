@@ -37,21 +37,29 @@ h2 {
 hr {
     width: 500px;
 }
-.game-container {
-    min-width: 550px;
-}
 
 .game {
     padding: 5px;
     flex: 1 1 auto;
     min-height: 540px;
     min-height: 540px;
+    min-width: 550px;
 }
 
 .gameboard-container {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.number-container {
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 500px;
+    margin-top: 20px;
+    display: flex;
+    height: 40px;
 }
 
 .gameboard 
@@ -64,11 +72,33 @@ hr {
 
 }
 
+.number,
+.cell
+{
+    font-size: 25px;
+    font-family:Arial, Helvetica, sans-serif;
+    height: 58px;
+    width: 58px;
+    background-color: var(--cell-color);
+    margin: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transition: 0.3s;
+}
+
+.number {
+    height: 50px;
+    width: 50px;
+}
+
+
 .buttons-container {
     justify-content: space-around;
     margin: 0 auto;
     max-width: 570px;
-    margin-top: 60px;
+    margin-top: 40px;
     display: flex;
     height: 40px;
 }
@@ -238,20 +268,6 @@ hr {
   opacity: 1;
   transform: scale(1,1);
 }
-.cell
-{
-    font-size: 25px;
-    font-family:Arial, Helvetica, sans-serif;
-    height: 58px;
-    width: 58px;
-    background-color: var(--cell-color);
-    margin: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: default;
-}
-
 
 .border-right {
     border-right: 2px solid var(--darkest-color);
@@ -273,12 +289,9 @@ hr {
     height: 56px;
 }
 
+.number:hover,
 .cell:hover {
     background-color: var(--onhover-color);
-}
-
-.hoverable {
-    transition: 0.3s;
 }
 
 .semiselected {
