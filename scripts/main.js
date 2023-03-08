@@ -25,6 +25,7 @@ const resetTimer = () =>
 {
     secondsElement.innerText = '00';
     minutesElement.innerText = '00';
+    minutes = 0;
     seconds = 0;
     stopTimer();
 }
