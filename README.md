@@ -4,7 +4,7 @@ Sudoku game created with pure javascript. Includes sudoku generator(copied) and 
 1. In my version of the game you have one clue, which is to check the current field state.
 2. You can use it only once.
 3. If it doesn't help you can let "Solver" solve it, but is it good enough for you?
-4. Something in here
+4. Something in here i done
 
 <div>
 <img src="/gif/sudoku_validation_green.gif" width="300">
