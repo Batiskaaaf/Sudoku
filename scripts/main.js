@@ -11,10 +11,8 @@ const notFilledCells = [];
 const selectedCells = [];
 let level_index = 0;
 
-createGameField();
-fillNumberContainer();
-
-newGameBtn.addEventListener('click', () =>{
+const newGame = () => 
+{
     validateBtn.innerText = 'Validate';
     startGrid = sudokuGen(CONSTANT.LEVEL[level_index]).original;
     prefiledCells = [];
@@ -38,7 +36,17 @@ newGameBtn.addEventListener('click', () =>{
         deselectAll();
         deselectCell();
     }
+}
+
+createGameField();
+fillNumberContainer();
+newGame();
+
+newGameBtn.addEventListener('click', () =>{
+    newGame();
 });
+
+
 
 validateBtn.addEventListener('click', (e) => {
     if(e.target.innerText == 'Validate')
