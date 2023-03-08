@@ -9,14 +9,14 @@ const cells = [];
 let prefiledCells =[];
 const notFilledCells = [];
 const selectedCells = [];
+let level_index = 0;
 
 createGameField();
 fillNumberContainer();
 
 newGameBtn.addEventListener('click', () =>{
-
     validateBtn.innerText = 'Validate';
-    startGrid = sudokuGen(29).original;
+    startGrid = sudokuGen(CONSTANT.LEVEL[level_index]).original;
     prefiledCells = [];
     currentGrid = startGrid.map((arr) => {
         return arr.slice();
@@ -83,6 +83,9 @@ resetBtn.addEventListener('click', () => {
         deselectAll();
         deselectCell();
     }
+    currentGrid = startGrid.map((arr) => {
+        return arr.slice();
+    });
 });
 
 document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e) => {
@@ -101,18 +104,16 @@ document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e
     } 
 })) 
 
-
 function solveIt()
 {
-    currentGrid = solveSudoku(currentGrid);
-
+    solveSudoku(startGrid);
     let i = 0;
     let j = 0;
 
     for(const cell of cells) 
     {   
         setTimeout((i,j) => {
-            cell.innerText = currentGrid[i][j];
+            cell.innerText = startGrid[i][j];
         }, Math.random() * 2000,i,j);
         j++;
         if(j == 9){
