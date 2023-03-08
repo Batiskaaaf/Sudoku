@@ -7,5 +7,5 @@ Sudoku game created with pure javascript. Includes sudoku generator(copied) and 
 
 
 ![Gameplay](/images/board.png)
-![Gameplay](/images/validation_green.png.png)
-![Gameplay](/images/validation_red.png.png)
+![Gameplay_Validation_Green](/images/validation_green.png.png)
+![Gameplay_Validation_Red](/images/validation_red.png.png)
