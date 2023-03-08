@@ -230,7 +230,7 @@ function greenColorAnimation(timeout = 0)
         const chunk = cells.slice(i, i + chunkSize);
         for (const cell of chunk) {
             setTimeout(() => cell.classList.add('green-color-animation'), timer);
-            setTimeout(() => cell.classList.remove('green-color-animation'), timeout + 2350);
+            setTimeout(() => cell.classList.remove('green-color-animation'), timeout + 2500);
         }
         timer += 100;
     }
