@@ -46,8 +46,6 @@ newGameBtn.addEventListener('click', () =>{
     newGame();
 });
 
-
-
 validateBtn.addEventListener('click', (e) => {
     if(e.target.innerText == 'Validate')
     {
