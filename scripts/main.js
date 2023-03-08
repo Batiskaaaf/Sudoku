@@ -10,9 +10,48 @@ let prefiledCells =[];
 const notFilledCells = [];
 const selectedCells = [];
 let level_index = 0;
+let secondsElement = document.querySelector('.seconds');
+let minutesElement = document.querySelector('.minutes');
+let seconds = 0;
+let minutes = 0;
+let timerInterval;
+
+const stopTimer = () =>
+{
+    clearInterval(timerInterval);
+}
+
+const resetTimer = () =>
+{
+    secondsElement.innerText = '00';
+    minutesElement.innerText = '00';
+    seconds = 0;
+    stopTimer();
+}
+
+const startTimer = () => {
+    timerInterval = setInterval(() => {
+        seconds++;
+        if(seconds < 10)
+            secondsElement.innerText = '0' + seconds;
+        if(seconds > 9)
+            secondsElement.innerText = seconds;
+        if(seconds >= 59){
+            minutes++;
+            seconds = 0;
+            secondsElement.innerText = '00';
+        }
+        if(minutes < 10)
+            minutesElement.innerText = '0' + minutes;
+
+        if (minutes > 9)
+            minutesElement.innerText = minutes;
+    }, 1000);
+}
 
 const newGame = () => 
 {
+    resetTimer();
     validateBtn.innerText = 'Validate';
     startGrid = sudokuGen(CONSTANT.LEVEL[level_index]).original;
     prefiledCells = [];
@@ -36,11 +75,26 @@ const newGame = () =>
         deselectAll();
         deselectCell();
     }
+    startTimer();
 }
 
 createGameField();
 fillNumberContainer();
 newGame();
+
+document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e) => {
+    if(selectedCell && !prefiledCells.find(x => x == selectedCell)){
+        selectedCell.innerText = e.target.innerText == 'X' ? '' : Number(e.target.innerText);
+        let row = Array.from(selectedCell.classList).find(x => x.includes('row')).charAt(4);
+        let col = Array.from(selectedCell.classList).find(x => x.includes('col')).charAt(4);
+        currentGrid[row][col] = e.target.innerText == 'X' ? 0 : Number(e.target.innerText);
+        let check = isComplitedSudoku(currentGrid);
+        if(check){
+            win();
+        }
+
+    } 
+})) 
 
 newGameBtn.addEventListener('click', () =>{
     newGame();
@@ -67,7 +121,8 @@ validateBtn.addEventListener('click', (e) => {
     else if (e.target.innerText = 'Solve it!')
     {
         solveIt();
-        greenColorAnimation(2000);
+        stopTimer(2000);
+        win(2000);
     }
     if(selectedCell)
     {
@@ -94,33 +149,27 @@ resetBtn.addEventListener('click', () => {
     });
 });
 
-document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e) => {
-    if(selectedCell && !prefiledCells.find(x => x == selectedCell)){
-        selectedCell.innerText = e.target.innerText == 'X' ? '' : Number(e.target.innerText);
-        let row = Array.from(selectedCell.classList).find(x => x.includes('row')).charAt(4);
-        let col = Array.from(selectedCell.classList).find(x => x.includes('col')).charAt(4);
-        currentGrid[row][col] = e.target.innerText == 'X' ? 0 : Number(e.target.innerText);
-        let check = isComplitedSudoku(currentGrid);
-        if(check){
-            deselectCell();
-            deselectAll();
-            greenColorAnimation();
-        }
-
-    } 
-})) 
+function win(delay = 0)
+{
+    deselectCell();
+    deselectAll();
+    greenColorAnimation(delay);
+    stopTimer();
+}
 
 function solveIt()
 {
     solveSudoku(startGrid);
     let i = 0;
     let j = 0;
-
     for(const cell of cells) 
     {   
         setTimeout((i,j) => {
             cell.innerText = startGrid[i][j];
         }, Math.random() * 2000,i,j);
+        currentGrid = startGrid.map((arr) => {
+            return arr.slice();
+        });
         j++;
         if(j == 9){
             i++;
@@ -167,6 +216,8 @@ function deselectAll()
 
 function deselectCell()
 {
+    if(!selectedCell)
+        return;
     selectedCell.classList.remove('selected');
     selectedCell = null;
 }
