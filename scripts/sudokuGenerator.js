@@ -132,6 +132,31 @@ const removeCells = (grid, level) => {
     return res;
 }
 
+const isComplitedSudoku = (grid) => {
+    let unassigned_pos = {
+        row: -1,
+        col: -1
+    }
+
+    if (!findUnassignedPos(grid, unassigned_pos)) return true;
+
+    grid.forEach((row, i) => {
+        row.forEach((num, j) => {
+            if (isSafe(grid, i, j, num)) {
+                if (isFullGrid(grid)) {
+                    return true;
+                } else {
+                    if (sudokuCreate(grid)) {
+                        return true;
+                    }
+                }
+            }
+        })
+    })
+
+    return isFullGrid(grid);
+}
+
 // generate sudoku base on level
 const sudokuGen = (level) => {
     let sudoku = newGrid(CONSTANT.GRID_SIZE);
@@ -146,8 +171,9 @@ const sudokuGen = (level) => {
     return undefined;
 }
 
-function isValidSudoku(grid) {
+function isValidSudoku(grid, complited) {
     // Check rows
+
     for (let row = 0; row < 9; row++) {
       const rowSet = new Set();
       for (let col = 0; col < 9; col++) {

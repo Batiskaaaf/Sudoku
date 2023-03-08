@@ -1,4 +1,7 @@
-let gameboard;
+let gameboard = document.querySelector('.gameboard');
+let validateBtn = document.querySelector('.btn-three');
+let resetBtn = document.querySelector('.btn-two');
+let newGameBtn = document.querySelector('.btn-one');
 let selectedCell = null;
 let startGrid;
 let currentGrid = [[]];
@@ -7,11 +10,12 @@ let prefiledCells =[];
 const notFilledCells = [];
 const selectedCells = [];
 
-gameboard = document.querySelector('.gameboard');
 createGameField();
 fillNumberContainer();
 
-document.querySelector('.btn-one').addEventListener('click', () =>{
+newGameBtn.addEventListener('click', () =>{
+
+    validateBtn.innerText = 'Validate';
     startGrid = sudokuGen(29).original;
     prefiledCells = [];
     currentGrid = startGrid.map((arr) => {
@@ -32,33 +36,41 @@ document.querySelector('.btn-one').addEventListener('click', () =>{
     if(selectedCell)
     {
         deselectAll();
-        deselectCell(selectedCell);
+        deselectCell();
     }
 });
 
-document.querySelector('.btn-three').addEventListener('click', (e) => {
+validateBtn.addEventListener('click', (e) => {
     if(e.target.innerText == 'Validate')
     {
         let isGood = isValidSudoku(currentGrid);
+        if(!isGood)
+        {
+            setTimeout(() => gameboard.classList.add('shake-animation'),100);
+            setTimeout(() => gameboard.classList.remove('shake-animation'),5000);
 
-        //TODO animate valid/invalid grid
-        console.log(isGood);
+            for (const cell of cells) {
+                setTimeout(() => cell.classList.add('red-color-animation'), 100);
+                setTimeout(() => cell.classList.remove('red-color-animation'), 5000);
+            }
+        }
+        else
+            greenColorAnimation();
         e.target.innerText = 'Solve it!'
     }
     else if (e.target.innerText = 'Solve it!')
     {
-        //TODO animate solution
-        solveSudoku(currentGrid);
-        console.log(currentGrid);
+        solveIt();
+        greenColorAnimation(2000);
     }
     if(selectedCell)
     {
         deselectAll();
-        deselectCell(selectedCell);
+        deselectCell();
     }
 });
 
-document.querySelector('.btn-two').addEventListener('click', () => {
+resetBtn.addEventListener('click', () => {
 
     for (const el of cells) {
         if(!prefiledCells.find(x => x == el))
@@ -69,35 +81,62 @@ document.querySelector('.btn-two').addEventListener('click', () => {
     if(selectedCell)
     {
         deselectAll();
-        deselectCell(selectedCell);
+        deselectCell();
     }
 });
 
 document.querySelectorAll('.number').forEach(x => x.addEventListener('click', (e) => {
     if(selectedCell && !prefiledCells.find(x => x == selectedCell)){
-        selectedCell.innerText = e.target.innerText;
+        selectedCell.innerText = e.target.innerText == 'X' ? '' : Number(e.target.innerText);
         let row = Array.from(selectedCell.classList).find(x => x.includes('row')).charAt(4);
         let col = Array.from(selectedCell.classList).find(x => x.includes('col')).charAt(4);
-        currentGrid[row][col] = Number(e.target.innerText);
-    }
+        currentGrid[row][col] = e.target.innerText == 'X' ? 0 : Number(e.target.innerText);
+        let check = isComplitedSudoku(currentGrid);
+        if(check){
+            deselectCell();
+            deselectAll();
+            greenColorAnimation();
+        }
 
-    
+    } 
 })) 
+
+
+function solveIt()
+{
+    currentGrid = solveSudoku(currentGrid);
+
+    let i = 0;
+    let j = 0;
+
+    for(const cell of cells) 
+    {   
+        setTimeout((i,j) => {
+            cell.innerText = currentGrid[i][j];
+        }, Math.random() * 2000,i,j);
+        j++;
+        if(j == 9){
+            i++;
+            j = 0;
+        }   
+    }
+    
+}
 
 function onClickCell(e)
 {      
     if(selectedCell == e.target){
-        deselectCell(selectedCell)
+        deselectCell()
         deselectAll();
         return;
     }
     if(selectedCell)
     {
-        deselectCell(selectedCell);
+        deselectCell();
         deselectAll();
     }
     
-    SelectCell(e.target);
+    selectCell(e.target);
 
     if(e.target.innerText != '' && cells.find(x => x == e.target))
     {
@@ -105,7 +144,7 @@ function onClickCell(e)
     }
 }
 
-function SelectCell(target)
+function selectCell(target)
 {
     target.classList.add('selected');
     selectedCell = target;
@@ -119,9 +158,9 @@ function deselectAll()
     }
 }
 
-function deselectCell(target)
+function deselectCell()
 {
-    target.classList.remove('selected');
+    selectedCell.classList.remove('selected');
     selectedCell = null;
 }
 
@@ -181,4 +220,18 @@ function fillNumberContainer()
         el.innerText = 'X';
     container.append(el);
     
+}
+
+function greenColorAnimation(timeout = 0)
+{
+    let timer = timeout;
+    const chunkSize = 9;
+    for (let i = 0; i < cells.length; i += chunkSize) {
+        const chunk = cells.slice(i, i + chunkSize);
+        for (const cell of chunk) {
+            setTimeout(() => cell.classList.add('green-color-animation'), timer);
+            setTimeout(() => cell.classList.remove('green-color-animation'), timeout + 2350);
+        }
+        timer += 100;
+    }
 }

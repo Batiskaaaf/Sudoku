@@ -8,6 +8,7 @@
     --onhover-color: #CBC5C1;
     --text-color: #A0C1B8;
     --timer-color: #FF7E5F;
+    --green-color: #66A182;
 }
 
 html{
@@ -105,7 +106,7 @@ hr {
 
 .box-1 { background-color: #FF6766; }
 .box-2 { background-color: #3C3C3C; }
-.box-3 { background-color: #66A182; }
+.box-3 { background-color: var(--green-color); }
 
 .btn {
     margin: 0px;
@@ -300,4 +301,40 @@ hr {
 
 .selected {
     background-color: var(--selected-color);
+}
+
+
+
+/* ANIMATION */
+.green-color-animation {
+    animation: change-color-to-green 2s;
+}
+
+.red-color-animation {
+    animation: change-color-to-red 1s;
+}
+
+.shake-animation {
+    animation: shake 1s;
+}
+
+@keyframes change-color-to-green {
+    0% { background-color: var(--cell-color) }
+    50% { background-color: var(--green-color) }
+    100% { background-color: var(--cell-color) }
+
+}
+
+@keyframes change-color-to-red {
+    0% { background-color: var(--cell-color) }
+    50% { background-color: var(--timer-color); }
+    100% { background-color: var(--cell-color); }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(10px) }
+    50% { transform: translateX(-10px) }
+    75% { transform: translateX(10px) }
+    100% { transform: translateX(0) }
 }
