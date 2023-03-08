@@ -59,16 +59,17 @@ const newGame = () =>
     currentGrid = startGrid.map((arr) => {
         return arr.slice();
     });
-    for (let i = 0; i < 9; i++)
+
+    for(let z = 0; z < cells.length; z++)
     {
-        for (let j = 0; j < 9; j++)
-        {
-            let el = cells.find(x => x.className.includes(`row-${i} col-${j}`));
-            if(startGrid[i][j] != 0 ){
-                prefiledCells.push(el);
-            }
-            setTimeout(() => el.innerText = startGrid[i][j] == 0 ? '' : startGrid[i][j], Math.random() * 500);
+        let i = Math.floor(z / CONSTANT.GRID_SIZE);
+        let j = z % CONSTANT.GRID_SIZE;
+        let el = cells[z];
+        if(startGrid[i][j] != 0 ){
+            prefiledCells.push(el);
         }
+        setTimeout(() => el.innerText = startGrid[i][j] == 0 ? '' : startGrid[i][j], Math.random() * 500);
+        
     }
 
     if(selectedCell)
